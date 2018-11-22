@@ -4666,7 +4666,7 @@ addSpinner("players", spinnerItemsP, "1")
 
 
 	
-dialogShow("Bot Galaxy Legend 0.6.1")
+dialogShow("Bot Galaxy Legend 0.6.11")
 
 
 if cbValue3 then
