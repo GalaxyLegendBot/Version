@@ -4465,7 +4465,7 @@ button_press = button_press_tmp
 --region_button:highlight(0.2)
 
 if region_button:exists(button_press, pause_press_button) then
-	toast("Вижу кнопку "..button_press)
+	--toast("Вижу кнопку "..button_press)
 	i = 0
 	repeat
 		region_button:existsClick(button_press, pause_press_button)
@@ -4476,7 +4476,7 @@ if region_button:exists(button_press, pause_press_button) then
 			break
 		end
 	until not region_button:exists(button_press)
-	toast("Ушла кнопка "..button_press.."("..i..")".."\nPause press: "..pause_press_button.."\nPause close: "..pause_close_button.."\nTime: "..t_press_button_two:check())
+	--toast("Ушла кнопка "..button_press.."("..i..")".."\nPause press: "..pause_press_button.."\nPause close: "..pause_close_button.."\nTime: "..t_press_button_two:check())
 else
 	if next_button == 1 then
 		return
@@ -4666,7 +4666,7 @@ addSpinner("players", spinnerItemsP, "1")
 
 
 	
-dialogShow("Bot Galaxy Legend 0.6.11")
+dialogShow("Bot Galaxy Legend 0.6.1")
 
 
 if cbValue3 then
