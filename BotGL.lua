@@ -4245,16 +4245,12 @@ region_button = region_button_tmp
 button_press = button_press_tmp
 --pause_press_button = 5
 --pause_close_button = 5
-if region_button:exists(button_press, pause_press_button) then
-	
-	if region_button:existsClick(button_press, pause_press_button) then
-		region_button:waitVanish(button_press, pause_close_button)
-		return
-	else
-		region_button:existsClick(button_press, pause_press_button * 2)
-		region_button:waitVanish(button_press, pause_close_button)
-		return
-	end
+if region_button:existsClick(button_press, pause_press_button) then
+	return
+end
+if region_button:existsClick(button_press, (pause_press_button * 2)) then
+	region_button:waitVanish(button_press, pause_close_button)
+	return
 else
 	pba = pba + 1
 end
@@ -4465,11 +4461,10 @@ button_press = button_press_tmp
 --region_button:highlight(0.2)
 
 if region_button:existsClick(button_press, pause_press_button) then
-	region_button:waitVanish(button_press, pause_close_button)
 	--toast("Вижу кнопку "..button_press)
 	i = 0
-	while region_button:existsClick(button_press, pause_press_button) do
-		region_button:waitVanish(button_press, pause_close_button)
+	while region_button:existsClick(button_press) do
+		region_button:waitVanish(button_press)
 		i = i + 1
 		if i > 30 then
 			Crash_game()
@@ -4483,11 +4478,10 @@ else
 	end
 	toast("Нет с первого раза "..button_press)
 	if region_button:existsClick(button_press, (pause_press_button * 2)) then
-		region_button:waitVanish(button_press, (pause_close_button * 2))
 		toast("Вижу кнопку №2 "..button_press)
 		i = 0
-		while region_button:existsClick(button_press, pause_press_button) do
-			region_button:waitVanish(button_press, pause_close_button)
+		while region_button:existsClick(button_press) do
+			region_button:waitVanish(button_press)
 			i = i + 1
 			if i > 30 then
 				Crash_game()
@@ -4497,18 +4491,17 @@ else
 		toast("Ушла кнопка "..button_press.."("..i..")".."\nPause press: "..pause_press_button.."\nPause close: "..pause_close_button.."\nTime: "..t_press_button_two:check())
 	else
 		toast("Нет со второго раза "..button_press)
-		if region_button:exists(button_press, (pause_press_button * 3)) then
+		if region_button:existsClick(button_press, (pause_press_button * 3)) then
 			toast("Вижу кнопку №3 "..button_press)
 			i = 1
-			repeat
-				region_button:existsClick(button_press, pause_press_button)
-				region_button:waitVanish(button_press, pause_close_button)
+			while region_button:existsClick(button_press) do
+				region_button:waitVanish(button_press)
 				i = i + 1
 				if i > 30 then
 					Crash_game()
 					break
 				end
-			until not region_button:exists(button_press)
+			end
 			toast("Ушла кнопка "..button_press.."("..i..")".."\nPause press: "..pause_press_button.."\nPause close: "..pause_close_button.."\nTime: "..t_press_button_two:check())
 		else
 			toast("Нет кнопки "..button_press.."\nPause press: "..pause_press_button.."\nPause close: "..pause_close_button.."\nTime: "..t_press_button_two:check())
