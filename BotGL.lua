@@ -1746,7 +1746,7 @@ if mn_menu_1:existsClick("Karta_na_mesyac.png", 10) then
 	if mn_menu_2:existsClick("Karta_na_mesyac.png", 10) then
 		
 		region_button_tmp = Poluchit_all_loc
-		button_press_tmp = Pattern("Poluchit_all.png"):similar(0.95)
+		button_press_tmp = "Poluchit_all.png"
 		--pause_press_button = 5
 		--pause_close_button = 5
 		Press_button_one()
@@ -1974,6 +1974,8 @@ if bk_sbros_loc:exists("bk_sbros.png") and (sbros == 1) then
 	--pause_close_button = 5
 
 	Press_button_two()
+	
+	wait(3)
 	
 	break_repeat = 1
 	while bk_ostanovit_nabeg_loc:exists("bk_ostanovit_nabeg.png") do
@@ -2515,6 +2517,7 @@ while (hk_korabli > 0) do
 		end					
 	
 	else
+		long_click_time = 0.01
 		press_location_tmp = hk_dalee_loc
 		Press_button_location()
 
@@ -4246,6 +4249,7 @@ button_press = button_press_tmp
 --pause_press_button = 5
 --pause_close_button = 5
 if region_button:existsClick(button_press, pause_press_button) then
+	toast("Жмем "..button_press)
 	return
 end
 if region_button:existsClick(button_press, (pause_press_button * 2)) then
@@ -4460,57 +4464,37 @@ region_button = region_button_tmp
 button_press = button_press_tmp
 --region_button:highlight(0.2)
 
-if region_button:existsClick(button_press, pause_press_button) then
-	--toast("Вижу кнопку "..button_press)
-	i = 0
-	while region_button:existsClick(button_press) do
-		region_button:waitVanish(button_press)
-		i = i + 1
-		if i > 30 then
-			Crash_game()
-			break
-		end
+
+local i = 0
+while not region_button:exists(button_press) do
+	if i > 2 and next_button == 1 then
+		toast("Кнопки может и не быть")
+		break
 	end
-	--toast("Ушла кнопка "..button_press.."("..i..")".."\nPause press: "..pause_press_button.."\nPause close: "..pause_close_button.."\nTime: "..t_press_button_two:check())
-else
-	if next_button == 1 then
-		return
+	if i > 20 and next_button == 0 then
+		toast("Кнопка не появилась")
+		Crash_game()
+		break
 	end
-	toast("Нет с первого раза "..button_press)
-	if region_button:existsClick(button_press, (pause_press_button * 2)) then
-		toast("Вижу кнопку №2 "..button_press)
-		i = 0
-		while region_button:existsClick(button_press) do
-			region_button:waitVanish(button_press)
-			i = i + 1
-			if i > 30 then
-				Crash_game()
-				break
-			end
-		end
-		toast("Ушла кнопка "..button_press.."("..i..")".."\nPause press: "..pause_press_button.."\nPause close: "..pause_close_button.."\nTime: "..t_press_button_two:check())
-	else
-		toast("Нет со второго раза "..button_press)
-		if region_button:existsClick(button_press, (pause_press_button * 3)) then
-			toast("Вижу кнопку №3 "..button_press)
-			i = 1
-			while region_button:existsClick(button_press) do
-				region_button:waitVanish(button_press)
-				i = i + 1
-				if i > 30 then
-					Crash_game()
-					break
-				end
-			end
-			toast("Ушла кнопка "..button_press.."("..i..")".."\nPause press: "..pause_press_button.."\nPause close: "..pause_close_button.."\nTime: "..t_press_button_two:check())
-		else
-			toast("Нет кнопки "..button_press.."\nPause press: "..pause_press_button.."\nPause close: "..pause_close_button.."\nTime: "..t_press_button_two:check())
-			Crash_game()
-		end
-	
-	end
-	
+	i = i + 1
 end
+
+
+local i = 0
+while region_button:exists(button_press) and last_crash_game == 0 do
+	if i > 20 and next_button == 1 then
+		toast("Кнопка не уходит")
+		Crash_game()
+		break
+	end
+	if region_button:existsClick(button_press, pause_press_button) and region_button:waitVanish(button_press, pause_close_button) then
+		toast("Ушла кнопка "..button_press.."("..i..")".."\nPause press: "..pause_press_button.."\nPause close: "..pause_close_button.."\nTime: "..t_press_button_two:check().."\n"..i)
+		break
+	end
+	i = i + 1
+end
+
+
 
 
 
@@ -4659,7 +4643,7 @@ addSpinner("players", spinnerItemsP, "1")
 
 
 	
-dialogShow("Bot Galaxy Legend 0.6.1")
+dialogShow("Bot Galaxy Legend "..latestVersion)
 
 
 if cbValue3 then
@@ -4870,7 +4854,7 @@ t_np = Timer()
 t_arena = Timer()
 t_priz = Timer()
 
-toast("Bot Galaxy Legend 0.6.1")
+toast("Bot Galaxy Legend "..latestVersion)
 
 
 
@@ -5396,6 +5380,18 @@ if p == 1 and players > 1 then
 		nachat_loc:existsClick("Nachat.png", 30)
 	end
 	Exit()
+	local wait_game = 1
+	while not exists("Nebesniy_Portal.png", 5) do					--citadel.png
+		existsClick("Nachat.png")
+		existsClick("mene_ponyato.png")
+		existsClick("exit1.png")
+		wait(3)
+		wait_game = wait_game + 1
+	if wait_game == 20 then
+		setStopMessage("Не могу зайти в игру :(")
+		scriptExit(":(")
+	end
+	end
 	--exists("citadel.png", 15)
 	Clear_quests_stat()
 	t_arena_first = 1
@@ -5429,6 +5425,18 @@ if p == 2 and players > 1 then
 		nachat_loc:existsClick("Nachat.png", 30)
 	end
 	Exit()
+	local wait_game = 1
+	while not exists("Nebesniy_Portal.png", 5) do					--citadel.png
+		existsClick("Nachat.png")
+		existsClick("mene_ponyato.png")
+		existsClick("exit1.png")
+		wait(3)
+		wait_game = wait_game + 1
+	if wait_game == 20 then
+		setStopMessage("Не могу зайти в игру :(")
+		scriptExit(":(")
+	end
+	end
 	--exists("citadel.png", 15)
 	Clear_quests_stat()
 	t_arena_first = 1
@@ -5462,6 +5470,18 @@ if p == 3 and players > 1 then
 		nachat_loc:existsClick("Nachat.png", 30)
 	end
 	Exit()
+	local wait_game = 1
+	while not exists("Nebesniy_Portal.png", 5) do					--citadel.png
+		existsClick("Nachat.png")
+		existsClick("mene_ponyato.png")
+		existsClick("exit1.png")
+		wait(3)
+		wait_game = wait_game + 1
+	if wait_game == 20 then
+		setStopMessage("Не могу зайти в игру :(")
+		scriptExit(":(")
+	end
+	end
 	--exists("citadel.png", 15)
 	Clear_quests_stat()
 	t_arena_first = 1
