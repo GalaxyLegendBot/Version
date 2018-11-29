@@ -1979,7 +1979,8 @@ if bk_sbros_loc:exists("bk_sbros.png") and (sbros == 1) then
 	
 	break_repeat = 1
 	while bk_ostanovit_nabeg_loc:exists("bk_ostanovit_nabeg.png") do
-		wait(1)
+		wait(2)
+		toast("Вижу кнопку ОСТАНОВИТЬ НАБЕГ")
 		Break_repeat()
 		if stop_break_repeat == 1 then
 			break
@@ -4092,22 +4093,24 @@ wait(5)
 toast("Запускаем Galaxy Legend")
 startApp("com.tap4fun.galaxyempire2_android")
 
+
+crash_game = crash_game + 1
+last_crash_game = 1
+pba = 0
+toast("Продолжаем...")
+
 local wait_game = 1
-while not exists("Nebesniy_Portal.png", 5) do                    --citadel.png
+while not exists("Nebesniy_Portal.png", 5) do					--citadel.png
 	existsClick("Nachat.png")
 	existsClick("mene_ponyato.png")
 	existsClick("exit1.png")
 	wait(3)
 	wait_game = wait_game + 1
-	if wait_game == 20 then
-		setStopMessage("Не могу зайти в игру :(")
-		scriptExit(":(")
-	end
+if wait_game == 20 then
+	setStopMessage("Не могу зайти в игру :(")
+	scriptExit(":(")
 end
-crash_game = crash_game + 1
-last_crash_game = 1
-pba = 0
-toast("Продолжаем...")
+end
 
 end
 
@@ -4465,14 +4468,14 @@ button_press = button_press_tmp
 --region_button:highlight(0.2)
 
 
-local i = 0
+i = 0
 while not region_button:exists(button_press) do
 	if i > 2 and next_button == 1 then
-		toast("Кнопки может и не быть")
+		toast("Кнопки может и не быть "..button_press)
 		break
 	end
 	if i > 20 and next_button == 0 then
-		toast("Кнопка не появилась")
+		toast("Кнопка не появилась "..button_press)
 		Crash_game()
 		break
 	end
@@ -4480,10 +4483,10 @@ while not region_button:exists(button_press) do
 end
 
 
-local i = 0
+i = 0
 while region_button:exists(button_press) and last_crash_game == 0 do
 	if i > 20 and next_button == 1 then
-		toast("Кнопка не уходит")
+		toast("Кнопка не уходит "..button_press)
 		Crash_game()
 		break
 	end
@@ -4740,7 +4743,7 @@ if rgIndex == 40 then
 	addTextView(" мин:  ")
 	addSpinnerIndex("spValueM", spinnerItemsM, os.date("%M"))
 
-	dialogShowFullScreen("Bot Galaxy Legend 0.6.1")
+	dialogShowFullScreen("Bot Galaxy Legend "..latestVersion)
 
 	cbValue1000 = cbValue0
 	cbValue1010 = cbValue10
